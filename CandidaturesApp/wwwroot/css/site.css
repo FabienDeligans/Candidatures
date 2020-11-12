@@ -16,8 +16,19 @@ table th {
     border-top: 0;
 }
 
+.fixePosition{
+    position: sticky;
+    top: 100px;
+    z-index: 1;
+    border-top: 0;
+}
 
-
+.fixePosition2 {
+    position: sticky;
+    top: 140px;
+    z-index: 1;
+    border-top: 0;
+}
 
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;

@@ -6,14 +6,13 @@
 <div class="row">
     <div class="col-1" align="center">
         <button id="insertButton" type="button" class="btn btn-primary" @onclick="@Create" style="background-color: green">Insert</button>
-        <p></p>
-        <select class="custom-select" @bind="@CandidatureId">
+        <select class="custom-select fixePosition" @bind="@CandidatureId">
             @foreach (var candidature in Candidatures.OrderBy(v => v.Entreprise))
             {
             <option value="@candidature.Id" style="background-color: @(candidature.Etat.Equals(Etat.Refusé) ? "red" : null )">@candidature.Entreprise</option>
             }
         </select>
-        <button type="button" class="btn btn-primary" @onclick="@(()=>Edit(CandidatureId))">Search</button>
+        <button type="button" class="btn btn-primary fixePosition2" @onclick="@(()=>Edit(CandidatureId))">Search</button>
 
     </div>
 
