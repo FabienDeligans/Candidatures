@@ -1,5 +1,24 @@
 @import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+
+table th {
+    position: sticky;
+    top: 60px;
+    z-index: 1;
+    border-top: 0;
+    background: #ededed;
+}
+
+#insertButton {
+    position: sticky;
+    top: 60px;
+    z-index: 1;
+    border-top: 0;
+}
+
+
+
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
