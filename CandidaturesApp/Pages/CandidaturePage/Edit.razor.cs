@@ -34,7 +34,7 @@ namespace CandidaturesApp.Pages.CandidaturePage
             else
             {
                 Candidature = new Candidature();
-                InEditMode = false; 
+                InEditMode = false;
                 Candidature.Date = DateTime.Now;
                 Candidature.DateEtat = DateTime.Now;
             }
@@ -45,12 +45,12 @@ namespace CandidaturesApp.Pages.CandidaturePage
             var controller = new BaseController<Candidature>();
 
             Candidature.Date = Candidature.Date.Date.ToUniversalTime();
-            Candidature.DateEtat= Candidature.DateEtat.Date.ToUniversalTime();
+            Candidature.DateEtat = Candidature.DateEtat.Date.ToUniversalTime();
+            Candidature.Entreprise = Candidature.Entreprise.ToUpper();
+
             if (InEditMode)
             {
-                Candidature.Entreprise = Candidature.Entreprise.ToUpper(); 
                 controller.ReplaceOne(Candidature);
-
             }
             else
             {
@@ -68,7 +68,7 @@ namespace CandidaturesApp.Pages.CandidaturePage
 
         public void OpenUrl(string url)
         {
-            if(url == null || !url.Contains(@$"C:\Users\delig\Google Drive\CV\Annonces\"))return;
+            if (url == null || !url.Contains(@$"C:\Users\delig\Google Drive\CV\Annonces\")) return;
             Process p = new Process
             {
                 StartInfo =
@@ -83,7 +83,7 @@ namespace CandidaturesApp.Pages.CandidaturePage
 
         public void GetUrl()
         {
-            if(FileName == null) return;
+            if (FileName == null) return;
             var name = FileName.Replace(@$"C:\fakepath\", "");
             Candidature.Annonce = @$"C:\Users\delig\Google Drive\CV\Annonces\{name}";
         }
