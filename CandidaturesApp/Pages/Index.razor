@@ -6,10 +6,10 @@
 <div class="row">
     <div class="col-1" align="center">
         <button id="insertButton" type="button" class="btn btn-primary" @onclick="@Create" style="background-color: green">Insert</button>
-        <select class="custom-select fixePosition" @bind="@CandidatureId">
+        <select class="custom-select fixePosition" @bind="@CandidatureId" style="margin-top: 10px">
             @foreach (var candidature in Candidatures.OrderBy(v => v.Entreprise))
             {
-            <option value="@candidature.Id" style="background-color: @(candidature.Etat.Equals(Etat.Refusé) ? "red" : null )">@candidature.Entreprise</option>
+                <option value="@candidature.Id" style="background-color: @(candidature.Etat.Equals(Etat.Refusé) ? "red" : null )">@candidature.Entreprise</option>
             }
         </select>
         <button type="button" class="btn btn-primary fixePosition2" @onclick="@(()=>Edit(CandidatureId))">Search</button>
@@ -19,57 +19,57 @@
     <div class="col-10">
 
         @if (Candidatures != null)
-{
-        <div class="container-fluid">
-            <div class="row">
-                <table class="table table-bordered" id="table">
-                    <thead class="h5">
-                        <tr>
-                            @foreach (var etat in Enum.GetValues(typeof(Etat)))
-                        {
-                            <th class="align-middle">@etat.ToString()?.Replace("_", " ") (@Candidatures.Count(v => etat.Equals(v.Etat)))</th>
-                        }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var candidature in Candidatures)
-                    {
-                        <tr>
-                            @foreach (var etat in Enum.GetValues(typeof(Etat)))
+        {
+            <div class="container-fluid">
+                <div class="row">
+                    <table class="table table-bordered" id="table">
+                        <thead class="h5">
+                            <tr>
+                                @foreach (var etat in Enum.GetValues(typeof(Etat)))
+                                {
+                                    <th class="align-middle">@etat.ToString()?.Replace("_", " ") (@Candidatures.Count(v => etat.Equals(v.Etat)))</th>
+                                }
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var candidature in Candidatures)
                             {
-                            <td style="width: 20%">
-                                @if (etat.Equals(candidature.Etat))
+                                <tr>
+                                    @foreach (var etat in Enum.GetValues(typeof(Etat)))
                                     {
-                                <div><b>@candidature.Date.ToLongDateString()</b></div>
-                                <div @onclick="@(()=>Edit(candidature.Id))"><a href="#">@candidature.Entreprise</a></div>
-                                <div>
-                                    <em>
-                                        @if (etat.Equals(Etat.Relancé))
+                                        <td style="width: 20%">
+                                            @if (etat.Equals(candidature.Etat))
                                             {
-                                        <span>relacé le : </span>
-                                            }
-                                        @if (etat.Equals(Etat.Entretien_A_Venir) || (etat.Equals(Etat.Entretien_Effectué)))
-                                            {
-                                        <span>entretien le : </span>
-                                            }
-                                        @if (etat.Equals(Etat.Refusé))
-                                            {
-                                        <span>refusé le : </span>
-                                            }
+                                                <div><b>@candidature.Date.ToLongDateString()</b></div>
+                                                <div @onclick="@(()=>Edit(candidature.Id))"><a href="#">@candidature.Entreprise</a></div>
+                                                <div>
+                                                    <em>
+                                                        @if (etat.Equals(Etat.Relancé))
+                                                        {
+                                                            <span>relacé le : </span>
+                                                        }
+                                                        @if (etat.Equals(Etat.Entretien_A_Venir) || (etat.Equals(Etat.Entretien_Effectué)))
+                                                        {
+                                                            <span>entretien le : </span>
+                                                        }
+                                                        @if (etat.Equals(Etat.Refusé))
+                                                        {
+                                                            <span>refusé le : </span>
+                                                        }
 
-                                        @candidature.DateEtat.ToLongDateString()
-                                    </em>
-                                </div>
+                                                        @candidature.DateEtat.ToLongDateString()
+                                                    </em>
+                                                </div>
+                                            }
+                                        </td>
                                     }
-                            </td>
+                                </tr>
                             }
-                        </tr>
-                    }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
-}
+        }
     </div>
 </div>
 <p></p>

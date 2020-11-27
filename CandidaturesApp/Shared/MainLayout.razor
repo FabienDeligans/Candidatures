@@ -1,4 +1,6 @@
-﻿@inherits LayoutComponentBase
+﻿@using CandidaturesCore.Controller
+@using CandidaturesCore.Model
+@inherits LayoutComponentBase
 @*<div class="sidebar">
         <NavMenu />
     </div>*@
@@ -6,7 +8,7 @@
 <div class="main">
     <div class="sticky-top" style="background-color: lightskyblue" align="center">
         <div class="row">
-            <h1><b>Gestion des Candidatures</b></h1>
+            <h1><b>Gestion des Candidatures (@Count)</b></h1>
         </div>
     </div>
 
@@ -14,3 +16,15 @@
         @Body
     </div>
 </div>
+
+
+@code
+{
+    public int Count { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var controller = new BaseController<Candidature>();
+        Count = controller.QueryCollection().Count(); 
+    }
+}
