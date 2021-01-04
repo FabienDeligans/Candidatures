@@ -1,0 +1,63 @@
+﻿@page "/"
+@using CandidaturesCore.Model
+@inject IModalService Modal
+
+<div class="row">
+
+    @if (Candidatures != null)
+    {
+        <div class="container-fluid">
+            <div class="row">
+                <table class="table table-bordered" id="table">
+                    <thead class="h5">
+                    <tr>
+                        <th class="align-middle">#</th>
+                        @foreach (var etat in Enum.GetValues(typeof(Etat)))
+                        {
+                            <th class="align-middle">@etat.ToString()?.Replace("_", " ") (@Candidatures.Count(v => etat.Equals(v.Etat)))</th>
+                        }
+                    </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var candidature in Candidatures)
+                        {
+                            <tr>
+                                <td class="align-middle">@(Candidatures.FindIndex(v => v == candidature)+1)</td>
+                                @foreach (var etat in Enum.GetValues(typeof(Etat)))
+                                {
+                                    <td style="width: 20%">
+                                        @if (etat.Equals(candidature.Etat))
+                                        {
+                                            <div><b>@candidature.Date.ToLongDateString()</b></div>
+                                            <div @onclick="@(() => Edit(candidature.Id))"><a href="#">@candidature.Entreprise</a></div>
+                                            <div>
+                                                <em>
+                                                    @if (etat.Equals(Etat.Relancé))
+                                                    {
+                                                        <span>relacé le : </span>
+                                                    }
+                                                    @if (etat.Equals(Etat.Entretien_A_Venir) || (etat.Equals(Etat.Entretien_Effectué)))
+                                                    {
+                                                        <span>entretien le : </span>
+                                                    }
+                                                    @if (etat.Equals(Etat.Refusé))
+                                                    {
+                                                        <span>refusé le : </span>
+                                                    }
+
+                                                    @candidature.DateEtat.ToLongDateString()
+                                                </em>
+                                            </div>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+</div>
+

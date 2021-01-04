@@ -1,0 +1,78 @@
+﻿@using CandidaturesCore.Model
+@using CandidaturesCore.Controller
+@using GestionCandidatures.Pages.CandidaturePage
+@inject IModalService Modal
+@inject NavigationManager Nav
+
+@inherits LayoutComponentBase
+
+@*<div class="sidebar">
+    <NavMenu />
+</div>*@
+
+<div class="main">
+    <div class="top-row px-4">
+        
+        <div style="padding-right: 200px; border: 5px">
+            <h1><b>Gestion des Candidatures (@Candidatures.Count)</b></h1>
+        </div>
+
+        <div>
+            <button class="btn btn-info" @onclick="Create"><span class="oi oi-plus" aria-hidden="true"></span> Ajouter</button>
+        </div>
+
+        <div class="col-3">
+            <select class="custom-select" @onchange="@Search">
+                <option disabled="disabled"></option>
+                @foreach (var candidature in Candidatures.OrderBy(v => v.Entreprise))
+                {
+                    <option value="@candidature.Id" style="background-color: @(candidature.Etat.Equals(Etat.Refusé) ? "red" : null)">@candidature.Entreprise</option>
+                }
+            </select>
+        </div>
+
+    </div>
+
+    <div class="content px-4">
+        @Body
+    </div>
+</div>
+
+@code
+{
+    private List<Candidature> Candidatures { get; set; } = new List<Candidature>();
+
+    protected override void OnInitialized()
+    {
+        var controller = new BaseController<Candidature>();
+        Candidatures = controller.QueryCollection().OrderBy(v => v.Date).ToList();
+    }
+
+    private async Task Create()
+    {
+        var modalForm = Modal.Show<Edit>("Nouvelle candidature");
+        var result = await modalForm.Result;
+        if (!result.Cancelled)
+        {
+            StateHasChanged();
+            OnInitialized();
+            Nav.NavigateTo("", forceLoad: true);
+        }
+    }
+
+    private async Task Search(ChangeEventArgs e)
+    {
+        var parameter = new ModalParameters();
+        parameter.Add(nameof(Pages.CandidaturePage.Edit.CandidatureId), e.Value.ToString());
+        var modalForm = Modal.Show<Edit>("Update Candidature", parameter);
+        var result = await modalForm.Result;
+
+        if (!result.Cancelled)
+        {
+            StateHasChanged();
+            OnInitialized();
+            Nav.NavigateTo("", forceLoad: true);
+        }
+    }
+    
+}

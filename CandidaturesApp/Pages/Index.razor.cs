@@ -12,8 +12,8 @@ namespace CandidaturesApp.Pages
 {
     public partial class Index
     {
-        public List<Candidature> Candidatures { get; set; } = new List<Candidature>();
-        public string Search { get; set; }
+        private List<Candidature> Candidatures { get; set; } = new List<Candidature>();
+        private List<Candidature> CandidaturesFiltre { get; set; }
 
         public string CandidatureId { get; set; }
 
@@ -21,9 +21,10 @@ namespace CandidaturesApp.Pages
         {
             var controller = new BaseController<Candidature>();
             Candidatures = controller.QueryCollection().OrderBy(v => v.Date).ToList();
+            CandidaturesFiltre = Candidatures;
         }
 
-        public async Task Create()
+        private async Task Create()
         {
             var modalForm = Modal.Show<Edit>("Nouvelle candidature");
             var result = await modalForm.Result;
@@ -34,7 +35,7 @@ namespace CandidaturesApp.Pages
             }
         }
 
-        public async Task Edit(string id)
+        private async Task Edit(string id)
         {
             var parameter = new ModalParameters();
             parameter.Add(nameof(Pages.CandidaturePage.Edit.CandidatureId), id);
@@ -45,6 +46,27 @@ namespace CandidaturesApp.Pages
             {
                 OnInitialized();
             }
+        }
+
+        private async Task Search(ChangeEventArgs e)
+        {
+            var parameter = new ModalParameters();
+            parameter.Add(nameof(Pages.CandidaturePage.Edit.CandidatureId), e.Value.ToString());
+            var modalForm = Modal.Show<Edit>("Update Candidature", parameter);
+            var result = await modalForm.Result;
+
+            if (!result.Cancelled)
+            {
+                OnInitialized();
+            }
+        }
+
+        private void Filtre(ChangeEventArgs e)
+        {
+            CandidaturesFiltre = Candidatures
+                .Where(v => v.DateEtat >= DateTime.Parse(e.Value.ToString() ?? string.Empty))
+                .ToList(); 
+            StateHasChanged();
         }
 
     }

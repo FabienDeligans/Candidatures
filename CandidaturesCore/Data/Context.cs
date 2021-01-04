@@ -11,7 +11,7 @@ namespace CandidaturesCore.Data
         private string DatabaseName { get; set; } = "GestionCandidatures";
         public Context()
         {
-            Client = new MongoClient("mongodb://127.0.0.1:27017");
+            Client = new MongoClient("mongodb://localhost:27017");
             _mongoDatabase = Client.GetDatabase(DatabaseName);
         }
 

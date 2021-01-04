@@ -1,0 +1,65 @@
+﻿@page "/editCandidature/{CandidatureId}"
+@page "/nouvelleCandidature"
+@using CandidaturesCore.Model
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+
+            <table class="table table-sm">
+                <tbody>
+                    <tr>
+                        <td><label for="date" class="col-3">Date</label></td>
+                        <td><input id="date" type="date" @bind="Candidature.Date" class="col-6" /></td>
+                    </tr>
+                    <tr>
+                        <td><label for="entrprise" class="col-3">Entreprise</label></td>
+                        <td><input id="entrprise" type="text" @bind="Candidature.Entreprise" class="col-6" /></td>
+                    </tr>
+                    <tr>
+                        <td><input type="file" @bind="@FileName" class="col-12"/></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <button type="button" class="btn btn-primary" @onclick="@GetUrl">
+                                Get URL annonce
+                            </button>
+                        </td>
+                        <td><input id="annonce" disabled="disabled" type="text" @bind="Candidature.Annonce" class="col-6" /></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><button type="button" class="btn btn-primary" @onclick="@(() => OpenUrl(Candidature.Annonce))">Voir Annonce</button></td>
+                    </tr>
+                    <tr>
+                        <td><label for="etat" class="col-6">Etat</label></td>
+                        <td>
+                            <select class="custom-select col-6" @bind="Candidature.Etat" id="etat" style="background-color: @(Candidature.Etat.Equals(Etat.Refusé) ? "red" : null )">
+                                @foreach (var etat in Enum.GetValues(typeof(Etat)))
+                                {
+                                <option value="@etat" style="background-color: @(etat.Equals(Etat.Refusé) ? "red" : null )">@etat.ToString()?.Replace("_", " ")</option>
+                                }
+                            </select>
+                        </td>
+                    </tr>
+                <tr>
+                    <td><b><label for="dateEtat" class="col-6">Date Nouvel Etat</label></b></td>
+                    <td><input id="dateEtat" type="date" @bind="Candidature.DateEtat" class="col-6" /></td>
+                </tr>
+                <tr>
+                    <td><label for="note" class="col-6">Notes</label></td>
+                    <td><textarea id="note" rows="5" cols="50" @bind="@Candidature.Note" class="form-control"></textarea></td>
+                </tr>
+                </tbody>
+            </table>
+
+
+
+            <button class="btn btn-primary" @onclick="Save">Submit</button>
+            <button class="btn btn-danger" @onclick="Cancel">Cancel</button>
+
+        </div>
+    </div>
+</div>

@@ -6,14 +6,22 @@
 <div class="row">
     <div class="col-1" align="center">
         <button id="insertButton" type="button" class="btn btn-primary" @onclick="@Create" style="background-color: green">Insert</button>
-        <select class="custom-select fixePosition" @bind="@CandidatureId" style="margin-top: 10px">
+
+        <p></p>
+
+        <select class="custom-select fixePosition" @onchange="@Search">
+            <option></option>
             @foreach (var candidature in Candidatures.OrderBy(v => v.Entreprise))
             {
                 <option value="@candidature.Id" style="background-color: @(candidature.Etat.Equals(Etat.Refusé) ? "red" : null )">@candidature.Entreprise</option>
             }
         </select>
-        <button type="button" class="btn btn-primary fixePosition2" @onclick="@(()=>Edit(CandidatureId))">Search</button>
-
+        
+        <p></p>
+        FILTRE
+        <input type="date" @onchange="Filtre" class="col-12 small"/>
+        
+        <button @onclick="OnInitialized" >init</button>
     </div>
 
     <div class="col-10">
@@ -27,12 +35,12 @@
                             <tr>
                                 @foreach (var etat in Enum.GetValues(typeof(Etat)))
                                 {
-                                    <th class="align-middle">@etat.ToString()?.Replace("_", " ") (@Candidatures.Count(v => etat.Equals(v.Etat)))</th>
+                                    <th class="align-middle">@etat.ToString()?.Replace("_", " ") (@CandidaturesFiltre.Count(v => etat.Equals(v.Etat)))</th>
                                 }
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var candidature in Candidatures)
+                            @foreach (var candidature in CandidaturesFiltre)
                             {
                                 <tr>
                                     @foreach (var etat in Enum.GetValues(typeof(Etat)))
